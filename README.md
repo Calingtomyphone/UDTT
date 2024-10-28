@@ -94,3 +94,72 @@ int main() {
 
     return 0;
 }
+bay
+#include<iostream>
+#include<string>
+#include<vector>
+
+using namespace std;
+
+struct chuyenbay{
+	string sohieu;
+	int giave;
+	int soghe;
+};
+int *x;
+vector<chuyenbay> cb;
+
+void create(){
+	cb.push_back(chuyenbay{"VN01",700000,25});
+	cb.push_back(chuyenbay{"VN02",300000,25});
+	cb.push_back(chuyenbay{"VN03",200000,25});
+	cb.push_back(chuyenbay{"VN04",100000,25});
+	cb.push_back(chuyenbay{"VN05",900000,25});
+	cb.push_back(chuyenbay{"VN06",800000,25});
+}
+void hienthi(chuyenbay a){
+	cout<<a.sohieu<<" "<<a.giave<<" "<<a.soghe<<endl;
+}
+void hienthigiave(int n){
+	if(n<0){
+		return;
+	}
+	if (cb.at(n).giave>700000)
+		hienthi(cb.at(n));
+	return hienthigiave(n-1);
+}
+chuyenbay chiadetri(int l,int r){
+	if(l==r-1)
+		return cb[l].giave>cb[r].giave ? cb[r]:cb[l];
+	else if(l==r)
+		return cb[l];
+	else if(l<r){
+	int m=(l+r)/2;
+		return chiadetri(l,m).giave>chiadetri(m+1,r).giave ? chiadetri(m+1,r):chiadetri(l,m);
+}
+
+}
+void hienthima(int k){
+	 for(int i=0;i<k;i++)
+	 	cout<<cb[x[i]-1].sohieu<<" ";
+		 cout<<endl;
+}
+void quaylui(int n,int k,int i,int index){
+	if(k==0){
+		hienthima(index);
+		return;
+	}
+	for(int j=i;j<n;j++)
+		x[index=k]=j;
+	quaylui(n,k-1,i+1,index);
+}
+
+
+int main(){
+	create();
+	hienthigiave(cb.size()-1);
+	cout<<"min";
+	x=new int[4];
+	hienthi(chiadetri(0,cb.size()-1));
+	quaylui(cb.size(),4,0,4);
+}
