@@ -1,165 +1,88 @@
-# UDTT
-KTTX1
-#include <iostream>
-#include <vector>
-#include <string>
+using System.Collections.Generic;
+using System;
+using System.Linq;
 
-using namespace std;
+public class Program
+{
+    static List<SanPhamThanhLy> danhSachSanPham = new List<SanPhamThanhLy>();
 
-struct CongViec {
-    string maCV;
-    int thoiGianBatDau;
-    double thoiGianThucHien; // th?i gian th?c hi?n tính theo phút ho?c gi?
-};
+    static void Main(string[] args)
+    {
+        bool thoat = false;
+        do
+        {
+            Console.WriteLine("1. Nhap thong tin san pham");
+            Console.WriteLine("2. Hien thi danh sach san pham");
+            Console.WriteLine("3. Sua thong tin san pham");
+            Console.WriteLine("4. Thoat");
+            Console.Write("Nhap lua chon cua ban: ");
+            string luaChon = Console.ReadLine();
 
-vector<CongViec> c; // danh sách công vi?c
-vector<string> L;    // danh sách nhân viên
-int* x;              // m?ng dùng d? luu ch? s? khi quay lui
-
-void KhoiTao() {
-    c.push_back({"CV01", 8, 15});
-    c.push_back({"CV02", 9, 45});
-    c.push_back({"CV03", 10, 30});
-    c.push_back({"CV04", 11, 60});
-    c.push_back({"CV05", 13, 20});
-    c.push_back({"CV06", 14, 25});
-   
-   L.push_back("NV01");
-    L.push_back("NV02");
-    L.push_back("NV03");
-    L.push_back("NV04");
-    L.push_back("NV05");
-    L.push_back("NV06");
-};
-
-void HienThiCongViec(const CongViec& cv) {
-    cout << "Ma CV: " << cv.maCV << ", Thoi gian bat dau: " << cv.thoiGianBatDau 
-         << ", Thoi gian thuc hien: " << cv.thoiGianThucHien << " phut" << endl;
-}
-
-void HienThiNguoc(int n) {
-    if (n < 0)
-        return;
-    HienThiCongViec(c[n]);
-    HienThiNguoc(n - 1);
-}
-
-int DemCongViecNhoHon30(int l, int r) {
-    if (l == r)
-        return c[l].thoiGianThucHien <= 30 ? 1 : 0;
-    int m = (l + r) / 2;
-    return DemCongViecNhoHon30(l, m) + DemCongViecNhoHon30(m + 1, r);
-}
-
-void HienThiPhuongAn(int n) {
-    for (int i = 0; i < n; i++) {
-        cout << c[i].maCV << " - " << L[x[i] - 1] << "; ";
-    }
-    cout << endl;
-}
-
-void QuayLui(int n, int k) {
-    if (k == n) {
-        HienThiPhuongAn(n);
-        return;
-    }
-    for (int i = 1; i <= n; i++) {
-        bool ok = true;
-        for (int j = 0; j < k; j++) {
-            if (x[j] == i) {
-                ok = false;
-                break;
+            switch (luaChon)
+            {
+                case "1":
+                    NhapThongTinSanPham();
+                    break;
+                case "2":
+                    HienThiDanhSachSanPham();
+                    break;
+                case "3":
+                    SuaThongTinSanPham();
+                    break;
+                case "4":
+                    thoat = true;
+                    break;
+                default:
+                    Console.WriteLine("Lua chon khong hop le. Vui long thu lai.");
+                    break;
             }
         }
-        if (ok) {
-            x[k] = i;
-            QuayLui(n, k + 1);
+        while (!thoat);
+    }
+
+    static void NhapThongTinSanPham()
+    {
+        Console.Write("Nhap ma san pham: ");
+        string maSanPham = Console.ReadLine();
+        Console.Write("Nhap ten san pham: ");
+        string tenSanPham = Console.ReadLine();
+        Console.Write("Nhap gia san pham: ");
+        double giaSanPham = double.Parse(Console.ReadLine());
+        Console.Write("Nhap don gia: ");
+        double donGia = double.Parse(Console.ReadLine());
+        Console.Write("Nhap so luong: ");
+        int soLuong = int.Parse(Console.ReadLine());
+
+        SanPhamThanhLy sanPham = new SanPhamThanhLy(maSanPham, tenSanPham, giaSanPham, donGia, soLuong);
+        danhSachSanPham.Add(sanPham);
+    }
+
+    static void HienThiDanhSachSanPham()
+    {
+        Console.WriteLine("{0,-15} {1,-20} {2,-15} {3,-15} {4,-10} {5,-15}", "Ma SP", "Ten SP", "Gia SP", "Don Gia", "So Luong", "Tong Tien");
+        foreach (var sanPham in danhSachSanPham)
+        {
+            Console.WriteLine(sanPham.ToString());
         }
     }
-}
 
-int main() {
-    KhoiTao();
-    
-    cout << "Danh sach cong viec theo thu tu nguoc lai:" << endl;
-    HienThiNguoc(c.size() - 1);
+    static void SuaThongTinSanPham()
+    {
+        Console.Write("Nhap ma san pham can sua: ");
+        string maSanPham = Console.ReadLine();
 
-    cout << "\nSo cong viec co thoi gian thuc hien <= 30 phut: ";
-    cout << DemCongViecNhoHon30(0, c.size() - 1) << endl;
-
-    cout << "\nCac phuong an phan cong cong viec cho nhan vien:" << endl;
-    x = new int[L.size()];
-    QuayLui(c.size(), 0);
-    delete[] x;
-
-    return 0;
-}
-bay
-#include<iostream>
-#include<string>
-#include<vector>
-
-using namespace std;
-
-struct chuyenbay{
-	string sohieu;
-	int giave;
-	int soghe;
-};
-int *x;
-vector<chuyenbay> cb;
-
-void create(){
-	cb.push_back(chuyenbay{"VN01",700000,25});
-	cb.push_back(chuyenbay{"VN02",300000,25});
-	cb.push_back(chuyenbay{"VN03",200000,25});
-	cb.push_back(chuyenbay{"VN04",100000,25});
-	cb.push_back(chuyenbay{"VN05",900000,25});
-	cb.push_back(chuyenbay{"VN06",800000,25});
-}
-void hienthi(chuyenbay a){
-	cout<<a.sohieu<<" "<<a.giave<<" "<<a.soghe<<endl;
-}
-void hienthigiave(int n){
-	if(n<0){
-		return;
-	}
-	if (cb.at(n).giave>700000)
-		hienthi(cb.at(n));
-	return hienthigiave(n-1);
-}
-chuyenbay chiadetri(int l,int r){
-	if(l==r-1)
-		return cb[l].giave>cb[r].giave ? cb[r]:cb[l];
-	else if(l==r)
-		return cb[l];
-	else if(l<r){
-	int m=(l+r)/2;
-		return chiadetri(l,m).giave>chiadetri(m+1,r).giave ? chiadetri(m+1,r):chiadetri(l,m);
-}
-
-}
-void hienthima(int k){
-	 for(int i=0;i<k;i++)
-	 	cout<<cb[x[i]-1].sohieu<<" ";
-		 cout<<endl;
-}
-void quaylui(int n,int k,int i,int index){
-	if(k==0){
-		hienthima(index);
-		return;
-	}
-	for(int j=i;j<n;j++)
-		x[index=k]=j;
-	quaylui(n,k-1,i+1,index);
-}
-
-
-int main(){
-	create();
-	hienthigiave(cb.size()-1);
-	cout<<"min";
-	x=new int[4];
-	hienthi(chiadetri(0,cb.size()-1));
-	quaylui(cb.size(),4,0,4);
+        SanPhamThanhLy sanPham = danhSachSanPham.FirstOrDefault(sp => sp.MaSanPham == maSanPham);
+        if (sanPham != null)
+        {
+            Console.Write("Nhap don gia moi: ");
+            sanPham.DonGia = double.Parse(Console.ReadLine());
+            Console.Write("Nhap so luong moi: ");
+            sanPham.SoLuong = int.Parse(Console.ReadLine());
+            Console.WriteLine("Da cap nhat thong tin san pham.");
+        }
+        else
+        {
+            Console.WriteLine("Khong tim thay san pham co ma nhu tren.");
+        }
+    }
 }
