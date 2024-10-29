@@ -1,7 +1,77 @@
-using System.Collections.Generic;
-using System;
-using System.Linq;
+public abstract class SanPham
+{
+    private string maSanPham;
+    private string tenSanPham;
+    private double giaSanPham;
 
+    public string MaSanPham
+    {
+        get { return maSanPham; }
+        set { maSanPham = value; }
+    }
+
+    public string TenSanPham
+    {
+        get { return tenSanPham; }
+        set { tenSanPham = value; }
+    }
+
+    public double GiaSanPham
+    {
+        get { return giaSanPham; }
+        set { giaSanPham = value; }
+    }
+
+    public SanPham(string maSanPham, string tenSanPham, double giaSanPham)
+    {
+        this.maSanPham = maSanPham;
+        this.tenSanPham = tenSanPham;
+        this.giaSanPham = giaSanPham;
+    }
+
+    public abstract double TinhTongTien();
+
+    public override string ToString()
+    {
+        return string.Format("{0,-15} {1,-20} {2,-15}", maSanPham, tenSanPham, giaSanPham);
+    }
+}
+he
+public class SanPhamThanhLy : SanPham
+{
+    private double donGia;
+    private int soLuong;
+
+    public double DonGia
+    {
+        get { return donGia; }
+        set { donGia = value; }
+    }
+
+    public int SoLuong
+    {
+        get { return soLuong; }
+        set { soLuong = value; }
+    }
+
+    public SanPhamThanhLy(string maSanPham, string tenSanPham, double giaSanPham, double donGia, int soLuong)
+        : base(maSanPham, tenSanPham, giaSanPham)
+    {
+        this.donGia = donGia;
+        this.soLuong = soLuong;
+    }
+
+    public override double TinhTongTien()
+    {
+        return donGia * soLuong;
+    }
+
+    public override string ToString()
+    {
+        return base.ToString() + string.Format(" {0,-15} {1,-10} {2,-15}", donGia, soLuong, TinhTongTien());
+    }
+}
+he
 public class Program
 {
     static List<SanPhamThanhLy> danhSachSanPham = new List<SanPhamThanhLy>();
@@ -70,7 +140,7 @@ public class Program
     {
         Console.Write("Nhap ma san pham can sua: ");
         string maSanPham = Console.ReadLine();
-
+        
         SanPhamThanhLy sanPham = danhSachSanPham.FirstOrDefault(sp => sp.MaSanPham == maSanPham);
         if (sanPham != null)
         {
